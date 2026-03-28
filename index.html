@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>gentle reminders</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf6f0;
+    --warm-white: #fff9f3;
+    --sage: #8aaa8c;
+    --sage-light: #b8cfba;
+    --sage-pale: #e8f0e9;
+    --clay: #c4896a;
+    --clay-light: #e8bda8;
+    --clay-pale: #f5e8e0;
+    --text: #3d3530;
+    --text-soft: #7a6e68;
+    --text-faint: #b0a49e;
+    --border: #e2d8d0;
+    --shadow: rgba(100,80,60,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+    background-image: 
+      radial-gradient(ellipse at 20% 10%, rgba(138,170,140,0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 90%, rgba(196,137,106,0.10) 0%, transparent 50%);
+  }
+
+  .container {
+    max-width: 580px;
+    margin: 0 auto;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .leaf-icon {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+    display: block;
+    animation: sway 4s ease-in-out infinite;
+  }
+
+  @keyframes sway {
+    0%, 100% { transform: rotate(-4deg); }
+    50% { transform: rotate(4deg); }
+  }
+
+  h1 {
+    font-family: 'Lora', serif;
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
+  h1 em {
+    color: var(--sage);
+    font-style: italic;
+  }
+
+  .subtitle {
+    font-size: 0.88rem;
+    color: var(--text-soft);
+    margin-top: 0.4rem;
+    font-weight: 300;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .permission-banner {
+    background: var(--clay-pale);
+    border: 1px solid var(--clay-light);
+    border-radius: 14px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--text);
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .permission-banner button {
+    margin-left: auto;
+    background: var(--clay);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.4rem 0.9rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+  .permission-banner button:hover { background: #b5795c; }
+
+  .card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1.75rem;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 2px 12px var(--shadow);
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .card:nth-child(2) { animation-delay: 0.1s; }
+  .card:nth-child(3) { animation-delay: 0.15s; }
+  .card:nth-child(4) { animation-delay: 0.2s; }
+  .card:nth-child(5) { animation-delay: 0.25s; }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .card-icon { font-size: 1.3rem; }
+
+  .card-title {
+    font-family: 'Lora', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .toggle-switch {
+    margin-left: auto;
+    position: relative;
+    width: 44px;
+    height: 24px;
+  }
+
+  .toggle-switch input { opacity: 0; width: 0; height: 0; }
+
+  .toggle-track {
+    position: absolute;
+    inset: 0;
+    background: var(--border);
+    border-radius: 24px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .toggle-track::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: white;
+    top: 3px;
+    left: 3px;
+    transition: transform 0.3s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  }
+
+  .toggle-switch input:checked + .toggle-track { background: var(--sage); }
+  .toggle-switch input:checked + .toggle-track::after { transform: translateX(20px); }
+
+  .field-row {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .field {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-soft);
+    margin-bottom: 0.35rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  input[type="time"],
+  input[type="number"],
+  select {
+    width: 100%;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.55rem 0.8rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  input[type="time"]:focus,
+  input[type="number"]:focus,
+  select:focus {
+    border-color: var(--sage);
+    box-shadow: 0 0 0 3px rgba(138,170,140,0.15);
+  }
+
+  .hint {
+    font-size: 0.78rem;
+    color: var(--text-faint);
+    margin-top: 0.3rem;
+    font-style: italic;
+  }
+
+  .disabled-overlay {
+    opacity: 0.4;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+
+  .save-btn {
+    width: 100%;
+    background: var(--sage);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    padding: 1rem;
+    font-family: 'Lora', serif;
+    font-size: 1.05rem;
+    font-style: italic;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: background 0.2s, transform 0.15s;
+    letter-spacing: 0.01em;
+    box-shadow: 0 3px 12px rgba(138,170,140,0.3);
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .save-btn:hover { background: #7a9a7c; transform: translateY(-1px); }
+  .save-btn:active { transform: translateY(0); }
+
+  /* Active reminders panel */
+  #status-panel {
+    background: var(--sage-pale);
+    border: 1px solid var(--sage-light);
+    border-radius: 20px;
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1.25rem;
+    display: none;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  #status-panel h2 {
+    font-family: 'Lora', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .reminder-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .reminder-list li {
+    font-size: 0.875rem;
+    color: var(--text-soft);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--sage);
+    flex-shrink: 0;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .next-up {
+    margin-top: 1rem;
+    font-size: 0.82rem;
+    color: var(--clay);
+    font-weight: 500;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--text);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-size: 0.875rem;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  footer {
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--text-faint);
+    margin-top: 2rem;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <span class="leaf-icon">🌿</span>
+    <h1>gentle <em>reminders</em></h1>
+    <p class="subtitle">keep this tab open — it'll take care of you</p>
+  </header>
+
+  <div class="permission-banner" id="permission-banner">
+    <span>🔔</span>
+    <span>Needs permission to send notifications to your browser</span>
+    <button onclick="requestPermission()">Allow</button>
+  </div>
+
+  <div id="status-panel">
+    <h2>🌱 active today</h2>
+    <ul class="reminder-list" id="reminder-list"></ul>
+    <div class="next-up" id="next-up"></div>
+  </div>
+
+  <!-- Water -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">💧</span>
+      <span class="card-title">Water</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="water-on" checked onchange="toggleSection('water-fields', this.checked)">
+        <div class="toggle-track"></div>
+      </label>
+    </div>
+    <div id="water-fields">
+      <div class="field-row">
+        <div class="field">
+          <label>Every</label>
+          <select id="water-interval">
+            <option value="30">30 minutes</option>
+            <option value="45">45 minutes</option>
+            <option value="60" selected>1 hour</option>
+            <option value="90">90 minutes</option>
+            <option value="120">2 hours</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Between</label>
+          <input type="time" id="water-start" value="08:00">
+        </div>
+        <div class="field">
+          <label>And</label>
+          <input type="time" id="water-end" value="21:00">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Meals -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">🍽️</span>
+      <span class="card-title">Meals</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="meals-on" checked onchange="toggleSection('meals-fields', this.checked)">
+        <div class="toggle-track"></div>
+      </label>
+    </div>
+    <div id="meals-fields">
+      <div class="field-row">
+        <div class="field">
+          <label>Breakfast</label>
+          <input type="time" id="meal-breakfast" value="08:00">
+        </div>
+        <div class="field">
+          <label>Lunch</label>
+          <input type="time" id="meal-lunch" value="12:30">
+        </div>
+        <div class="field">
+          <label>Dinner</label>
+          <input type="time" id="meal-dinner" value="18:30">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Snack 1 <span style="font-weight:300;text-transform:none">(optional)</span></label>
+          <input type="time" id="meal-snack1" placeholder="--:--">
+        </div>
+        <div class="field">
+          <label>Snack 2 <span style="font-weight:300;text-transform:none">(optional)</span></label>
+          <input type="time" id="meal-snack2" placeholder="--:--">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sleep -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">🌙</span>
+      <span class="card-title">Sleep</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="sleep-on" checked onchange="toggleSection('sleep-fields', this.checked)">
+        <div class="toggle-track"></div>
+      </label>
+    </div>
+    <div id="sleep-fields">
+      <div class="field-row">
+        <div class="field">
+          <label>Wind down</label>
+          <input type="time" id="sleep-wind" value="21:30">
+        </div>
+        <div class="field">
+          <label>Bedtime</label>
+          <input type="time" id="sleep-bed" value="22:30">
+        </div>
+      </div>
+      <p class="hint">Wind down is a gentle heads-up before the real bedtime nudge.</p>
+    </div>
+  </div>
+
+  <!-- Wake -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">☀️</span>
+      <span class="card-title">Wake Up</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="wake-on" checked onchange="toggleSection('wake-fields', this.checked)">
+        <div class="toggle-track"></div>
+      </label>
+    </div>
+    <div id="wake-fields">
+      <div class="field-row">
+        <div class="field">
+          <label>Wake time</label>
+          <input type="time" id="wake-time" value="07:00">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="save-btn" onclick="saveAndStart()">save my schedule ✦</button>
+
+  <footer>works while this tab stays open · settings save automatically</footer>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  let scheduledTimers = [];
+  let notifPermission = Notification.permission;
+
+  // --- permission ---
+  function updatePermissionBanner() {
+    const banner = document.getElementById('permission-banner');
+    if (Notification.permission === 'granted') {
+      banner.style.display = 'none';
+    }
+  }
+
+  async function requestPermission() {
+    const result = await Notification.requestPermission();
+    notifPermission = result;
+    updatePermissionBanner();
+    if (result === 'granted') showToast('✓ notifications enabled');
+    else showToast('notifications blocked — check browser settings');
+  }
+
+  updatePermissionBanner();
+
+  // --- toggle ---
+  function toggleSection(id, on) {
+    document.getElementById(id).classList.toggle('disabled-overlay', !on);
+  }
+
+  // --- load saved ---
+  function loadSaved() {
+    const saved = localStorage.getItem('gentleReminders');
+    if (!saved) return;
+    try {
+      const d = JSON.parse(saved);
+      if (d.waterInterval) document.getElementById('water-interval').value = d.waterInterval;
+      if (d.waterStart) document.getElementById('water-start').value = d.waterStart;
+      if (d.waterEnd) document.getElementById('water-end').value = d.waterEnd;
+      if (d.waterOn !== undefined) { document.getElementById('water-on').checked = d.waterOn; toggleSection('water-fields', d.waterOn); }
+      if (d.breakfast) document.getElementById('meal-breakfast').value = d.breakfast;
+      if (d.lunch) document.getElementById('meal-lunch').value = d.lunch;
+      if (d.dinner) document.getElementById('meal-dinner').value = d.dinner;
+      if (d.snack1) document.getElementById('meal-snack1').value = d.snack1;
+      if (d.snack2) document.getElementById('meal-snack2').value = d.snack2;
+      if (d.mealsOn !== undefined) { document.getElementById('meals-on').checked = d.mealsOn; toggleSection('meals-fields', d.mealsOn); }
+      if (d.windDown) document.getElementById('sleep-wind').value = d.windDown;
+      if (d.bedtime) document.getElementById('sleep-bed').value = d.bedtime;
+      if (d.sleepOn !== undefined) { document.getElementById('sleep-on').checked = d.sleepOn; toggleSection('sleep-fields', d.sleepOn); }
+      if (d.wakeTime) document.getElementById('wake-time').value = d.wakeTime;
+      if (d.wakeOn !== undefined) { document.getElementById('wake-on').checked = d.wakeOn; toggleSection('wake-fields', d.wakeOn); }
+    } catch(e) {}
+  }
+
+  loadSaved();
+
+  // --- helpers ---
+  function timeToMinutes(t) {
+    if (!t) return null;
+    const [h, m] = t.split(':').map(Number);
+    return h * 60 + m;
+  }
+
+  function minutesToTime(m) {
+    const h = Math.floor(m / 60) % 24;
+    const min = m % 60;
+    return `${String(h).padStart(2,'0')}:${String(min).padStart(2,'0')}`;
+  }
+
+  function msUntil(timeStr) {
+    const now = new Date();
+    const [h, m] = timeStr.split(':').map(Number);
+    const target = new Date(now);
+    target.setHours(h, m, 0, 0);
+    if (target <= now) target.setDate(target.getDate() + 1);
+    return target - now;
+  }
+
+  function notify(title, body) {
+    if (Notification.permission !== 'granted') return;
+    try {
+      new Notification(title, { body, icon: '' });
+    } catch(e) {}
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // --- clear timers ---
+  function clearAll() {
+    scheduledTimers.forEach(t => clearTimeout(t));
+    scheduledTimers = [];
+  }
+
+  // --- schedule ---
+  function scheduleAt(timeStr, title, body, repeat = false) {
+    const ms = msUntil(timeStr);
+    const t = setTimeout(() => {
+      notify(title, body);
+      if (repeat) scheduleAt(timeStr, title, body, true);
+    }, ms);
+    scheduledTimers.push(t);
+    return { timeStr, title };
+  }
+
+  function scheduleWater(intervalMin, startStr, endStr) {
+    const startM = timeToMinutes(startStr);
+    const endM = timeToMinutes(endStr);
+    const times = [];
+    for (let m = startM; m <= endM; m += intervalMin) {
+      times.push(minutesToTime(m));
+    }
+    times.forEach(t => scheduleAt(t, '💧 hydration check', 'hey — take a sip of water', true));
+    return times;
+  }
+
+  // --- save & start ---
+  function saveAndStart() {
+    const data = {
+      waterOn: document.getElementById('water-on').checked,
+      waterInterval: document.getElementById('water-interval').value,
+      waterStart: document.getElementById('water-start').value,
+      waterEnd: document.getElementById('water-end').value,
+      mealsOn: document.getElementById('meals-on').checked,
+      breakfast: document.getElementById('meal-breakfast').value,
+      lunch: document.getElementById('meal-lunch').value,
+      dinner: document.getElementById('meal-dinner').value,
+      snack1: document.getElementById('meal-snack1').value,
+      snack2: document.getElementById('meal-snack2').value,
+      sleepOn: document.getElementById('sleep-on').checked,
+      windDown: document.getElementById('sleep-wind').value,
+      bedtime: document.getElementById('sleep-bed').value,
+      wakeOn: document.getElementById('wake-on').checked,
+      wakeTime: document.getElementById('wake-time').value,
+    };
+
+    localStorage.setItem('gentleReminders', JSON.stringify(data));
+    clearAll();
+
+    if (Notification.permission !== 'granted') {
+      showToast('⚠ allow notifications first (button above)');
+      return;
+    }
+
+    const active = [];
+
+    if (data.waterOn) {
+      const times = scheduleWater(parseInt(data.waterInterval), data.waterStart, data.waterEnd);
+      active.push(`💧 water every ${data.waterInterval}m (${data.waterStart}–${data.waterEnd})`);
+    }
+
+    if (data.mealsOn) {
+      const meals = [
+        { time: data.breakfast, label: 'breakfast time 🍳', body: "good morning — time to eat something" },
+        { time: data.lunch, label: 'lunch time 🥗', body: "midday — don't forget to eat" },
+        { time: data.dinner, label: 'dinner time 🍲', body: "evening — time for dinner" },
+        { time: data.snack1, label: 'snack time 🍎', body: "small snack — keep your energy up" },
+        { time: data.snack2, label: 'snack time 🍌', body: "another snack — you got this" },
+      ];
+      meals.forEach(({ time, label, body }) => {
+        if (time) { scheduleAt(time, label, body, true); active.push(`🍽 ${label} at ${time}`); }
+      });
+    }
+
+    if (data.sleepOn) {
+      scheduleAt(data.windDown, '🌙 wind down time', "start winding down — screen can wait", true);
+      scheduleAt(data.bedtime, '🛏 bedtime', "time to rest — you did enough today", true);
+      active.push(`🌙 wind down ${data.windDown}, bed ${data.bedtime}`);
+    }
+
+    if (data.wakeOn) {
+      scheduleAt(data.wakeTime, '☀️ good morning', "time to start your day gently", true);
+      active.push(`☀️ wake at ${data.wakeTime}`);
+    }
+
+    // show status
+    const panel = document.getElementById('status-panel');
+    const list = document.getElementById('reminder-list');
+    list.innerHTML = active.map(a => `<li><div class="dot"></div>${a}</li>`).join('');
+    panel.style.display = 'block';
+    panel.scrollIntoView({ behavior: 'smooth' });
+
+    // next up
+    updateNextUp();
+    showToast('✓ schedule saved — reminders are running');
+  }
+
+  function updateNextUp() {
+    const now = new Date();
+    const nowM = now.getHours() * 60 + now.getMinutes();
+
+    const saved = localStorage.getItem('gentleReminders');
+    if (!saved) return;
+    const d = JSON.parse(saved);
+
+    const upcoming = [];
+
+    if (d.waterOn) {
+      const interval = parseInt(d.waterInterval);
+      const start = timeToMinutes(d.waterStart);
+      const end = timeToMinutes(d.waterEnd);
+      for (let m = start; m <= end; m += interval) {
+        if (m > nowM) { upcoming.push({ m, label: '💧 water' }); break; }
+      }
+    }
+
+    if (d.mealsOn) {
+      [{ t: d.breakfast, l: '🍳 breakfast'}, { t: d.lunch, l: '🥗 lunch'}, { t: d.dinner, l: '🍲 dinner'},
+       { t: d.snack1, l: '🍎 snack'}, { t: d.snack2, l: '🍌 snack'}].forEach(({ t, l }) => {
+        if (t) {
+          const m = timeToMinutes(t);
+          if (m > nowM) upcoming.push({ m, label: l });
+        }
+      });
+    }
+
+    if (d.sleepOn) {
+      const wm = timeToMinutes(d.windDown);
+      const bm = timeToMinutes(d.bedtime);
+      if (wm > nowM) upcoming.push({ m: wm, label: '🌙 wind down' });
+      if (bm > nowM) upcoming.push({ m: bm, label: '🛏 bedtime' });
+    }
+
+    upcoming.sort((a, b) => a.m - b.m);
+
+    const el = document.getElementById('next-up');
+    if (upcoming.length > 0) {
+      const next = upcoming[0];
+      el.textContent = `next: ${next.label} at ${minutesToTime(next.m)}`;
+    } else {
+      el.textContent = "that's all for today ✦";
+    }
+  }
+
+  // refresh next-up every minute
+  setInterval(updateNextUp, 60000);
+
+  // auto-start if we have saved settings and permission already
+  if (localStorage.getItem('gentleReminders') && Notification.permission === 'granted') {
+    setTimeout(saveAndStart, 500);
+  }
+</script>
+</body>
+</html>
